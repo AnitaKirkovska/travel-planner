@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="hero.png" width="600" alt="Travel Planner">
+<img src="hero.png" width="200" alt="Travel Planner">
 
 # travel-planner
 
