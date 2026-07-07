@@ -18,7 +18,6 @@ The part you should read before installing. Once set up, the plugin acts on its 
 | When | What happens |
 | --- | --- |
 | Right after setup | Your assistant tells you what it found (profile, trips) and repeats this table in chat |
-| Sunday mornings | Preview of upcoming trips + open checklist items. Silent if you have no trips |
 | 3 days + 1 day before a trip | Gmail swept for gate changes, delays, cancellations. Email alert only if something changed |
 | 48 hours before departure | Trip brief generated and emailed to you, without being asked |
 | When you book | Trip block + flight events pushed to your Google Calendar |
@@ -50,7 +49,7 @@ First use: the assistant scans your Gmail travel history, shows you the profile 
 | `generate-trip-brief` (tool) | Build the EA-style HTML brief from a trip record |
 | `travel-planner` (skill) | The planning workflow: filter by profile, write back state, brief before departure |
 
-Scheduled jobs (Sunday preview, pre-trip monitoring, 48h brief send) are created through the assistant's built-in scheduler, same pattern as [Amex Perk Reminder](https://github.com/AnitaKirkovska/amex-perk-reminder).
+Scheduled jobs (pre-trip monitoring, 48h brief send) are created through the assistant's built-in scheduler, same pattern as [Amex Perk Reminder](https://github.com/AnitaKirkovska/amex-perk-reminder).
 
 ## Usage
 
