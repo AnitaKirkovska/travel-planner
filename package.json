@@ -1,7 +1,7 @@
 {
   "name": "travel-planner",
-  "version": "0.2.0",
-  "description": "A durable traveler profile plus trip records your assistant plans against. Remembers how you travel: preferred carrier, miles programs, hotel budget, booking preferences, card travel benefits.",
+  "version": "0.3.0",
+  "description": "A travel EA for your assistant: durable traveler profile, per-trip records, change monitoring via Gmail, calendar sync, and an EA-style trip brief emailed 48 hours before every departure.",
   "private": true,
   "license": "MIT",
   "type": "module",

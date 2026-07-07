@@ -1,27 +1,18 @@
 # Travel Planner
 
-Your assistant can already search flights and answer visa questions. What it can't do out of the box is remember how you travel. This plugin gives it a durable traveler profile and per-trip records, so trip two takes one prompt instead of twenty.
+Your assistant can already search flights and look up destinations. What it can't do out of the box is remember how you travel, or hand you the one-page briefing an EA would prepare before your boss got on a plane. This plugin does both.
 
-## What it stores
+## What you get
 
-**Traveler profile** (saved once, used every trip):
+- **A traveler profile**, drafted from your Gmail travel history and confirmed in one exchange: home airport, preferred carrier, miles programs, hotel budget, booking platform, card travel benefits, passport country.
+- **Trip records** that persist across conversations: flights considered and booked, hotel shortlist, visa status, checklist. Planning resumes where it stopped, days later.
+- **A trip brief**, 48 hours before every departure: flights with confirmation numbers, transfers with pickup times, hotel with check-in details, day-by-day plan, documents, local basics, emergency numbers. Rendered in-app, PDF'd, and emailed to you (and companions if you want). Decisions made, not options listed.
+- **Change monitoring**: 3 days and 1 day out, your Gmail gets swept for gate changes, delays, and cancellations. You only hear about it if something changed.
+- **Calendar sync**: trip block plus flight events pushed to Google Calendar once booked.
 
-- Home airport, passport country
-- Preferred airline and miles programs
-- Hotel budget range and booking platform preference (Booking.com, Airbnb, direct)
-- Card travel benefits to check against bookings (Amex hotel credit, travel portals)
-- Loyalty numbers, seat preference, anything standing
+## Requirements
 
-**Trip records** (one per trip, persists across conversations):
-
-- Dates, status, flights considered and booked
-- Hotel shortlist with budget filtering
-- Visa status and regulation notes
-- Checklist with done state
-
-## Why a plugin and not just a skill
-
-A skill can only tell the assistant how to behave in one conversation. This plugin ships tools (`get-travel-context`, `update-profile`, `update-trip`) that read and write real state on disk. Your preferences survive across chats, models, and months. Planning picks up exactly where it stopped.
+Gmail and Google Calendar connections. The plugin drafts your profile from email history, watches for booking changes, sends your brief, and blocks your calendar. Without them it can't do its job.
 
 ## Setup
 
@@ -29,14 +20,26 @@ A skill can only tell the assistant how to behave in one conversation. This plug
 assistant plugins install travel-planner
 ```
 
-On first use the assistant interviews you to build your profile, then offers two recurring reminders via its built-in scheduler: a Sunday trip preview and a 48-hour pre-trip checklist.
+First use: the assistant scans your Gmail travel history, shows you the profile it drafted, and asks only for what email can't reveal (passport, miles programs, card benefits). Reminders are created automatically and stay silent unless there's something to say.
+
+## Surfaces
+
+| Surface | What it does |
+| --- | --- |
+| `get-travel-context` (tool) | Read profile + trip records before any planning |
+| `update-profile` (tool) | Save durable travel preferences |
+| `update-trip` (tool) | Create/update per-trip records |
+| `generate-trip-brief` (tool) | Build the EA-style HTML brief from a trip record |
+| `travel-planner` (skill) | The planning workflow: filter by profile, write back state, brief before departure |
+
+Scheduled jobs (Sunday preview, pre-trip monitoring, 48h brief send) are created through the assistant's built-in scheduler, same pattern as [Amex Perk Reminder](https://github.com/AnitaKirkovska/amex-perk-reminder).
 
 ## Usage
 
 - "plan a trip to lisbon in september, 4 nights"
 - "find flights but only ones where I earn my miles"
 - "hotels under my usual budget, and check if any qualify for my card credit"
-- "do I need a visa for japan"
+- "send me my trip brief"
 - "where were we on the lisbon trip"
 - "what trips do I have coming up"
 

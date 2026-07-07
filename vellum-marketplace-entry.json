@@ -3,9 +3,9 @@
   "source": {
     "source": "github",
     "repo": "AnitaKirkovska/travel-planner",
-    "ref": "PIN_FULL_COMMIT_SHA_AFTER_PUSH"
+    "ref": "a514318e0ebd6a1f4e60c7d497c627683d0febd1"
   },
-  "description": "A durable traveler profile plus trip records your assistant plans against. Remembers your preferred carrier, miles programs, hotel budget, and card travel benefits, so trip two takes one prompt instead of twenty.",
+  "description": "A travel EA for your assistant. Remembers how you travel (carrier, miles, hotel budget, card benefits), keeps per-trip records, watches Gmail for booking changes, syncs your calendar, and emails an EA-style trip brief 48 hours before departure.",
   "category": "lifestyle",
   "homepage": "https://github.com/AnitaKirkovska/travel-planner",
   "license": "MIT"
