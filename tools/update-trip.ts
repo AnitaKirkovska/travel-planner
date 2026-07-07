@@ -53,7 +53,7 @@ const updateTrip: ToolDefinition = {
     };
     await fs.writeFile(tripPath, JSON.stringify(updated, null, 2), "utf8");
 
-    return { content: { slug: safeSlug, trip: updated } };
+    return { content: JSON.stringify({ slug: safeSlug, trip: updated }, null, 2) };
   },
 };
 

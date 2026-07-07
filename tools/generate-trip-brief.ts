@@ -172,14 +172,18 @@ const generateTripBrief: ToolDefinition = {
     ].filter(Boolean);
 
     return {
-      content: {
-        briefPath,
-        html,
-        missingSections: missing,
-        note: missing.length
-          ? `Brief generated but missing: ${missing.join(", ")}. Fill the trip record and regenerate before sending.`
-          : "Brief complete. Render in-app, convert to PDF, and email per the skill.",
-      },
+      content: JSON.stringify(
+        {
+          briefPath,
+          html,
+          missingSections: missing,
+          note: missing.length
+            ? `Brief generated but missing: ${missing.join(", ")}. Fill the trip record and regenerate before sending.`
+            : "Brief complete. Render in-app, convert to PDF, and email per the skill.",
+        },
+        null,
+        2,
+      ),
     };
   },
 };

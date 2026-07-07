@@ -38,7 +38,7 @@ const updateProfile: ToolDefinition = {
     const updated = { ...profile, ...input.fields, updatedAt: new Date().toISOString() };
     await fs.writeFile(profilePath, JSON.stringify(updated, null, 2), "utf8");
 
-    return { content: { saved: Object.keys(input.fields), profile: updated } };
+    return { content: JSON.stringify({ saved: Object.keys(input.fields), profile: updated }, null, 2) };
   },
 };
 

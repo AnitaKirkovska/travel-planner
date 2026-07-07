@@ -41,10 +41,10 @@ const getTravelContext: ToolDefinition = {
         const record = JSON.parse(
           await fs.readFile(path.join(tripsDir, `${input.trip}.json`), "utf8"),
         );
-        return { content: { profile, trip: record } };
+        return { content: JSON.stringify({ profile, trip: record }, null, 2) };
       } catch {
         return {
-          content: { profile, trip: null, note: `No trip record named '${input.trip}'.` },
+          content: JSON.stringify({ profile, trip: null, note: `No trip record named '${input.trip}'.` }, null, 2),
         };
       }
     }
@@ -67,7 +67,7 @@ const getTravelContext: ToolDefinition = {
       // no trips dir yet
     }
 
-    return { content: { profile, trips } };
+    return { content: JSON.stringify({ profile, trips }, null, 2) };
   },
 };
 
