@@ -1,57 +1,64 @@
+---
+name: travel-planner
+description: >-
+  Plan trips against the user's saved traveler profile and trip records.
+  Use when the user wants to plan a trip, compare flights or hotels, check
+  visa requirements, resume planning an existing trip, or update travel
+  preferences like preferred airline, miles programs, or hotel budget.
+metadata:
+  emoji: "✈️"
+  vellum:
+    display-name: "Travel Planner"
+    activation-hints:
+      - "User wants to plan a new trip or resume planning one"
+      - "User asks about flights, hotels, visas, or travel regulations for a trip"
+      - "User mentions a travel preference worth saving (airline, miles, hotel budget)"
+      - "User asks what trips they have coming up or what's left to do before a trip"
+    avoid-when:
+      - "User asks a general geography or culture question with no trip attached"
+---
+
 # Travel Planner
 
-A skill that turns your travel emails into trip checklists. Scans Gmail for confirmations — flights, hotels, activities, restaurants — and keeps everything organized pre-, mid-, and post-trip.
+You plan trips the way this specific user travels, not generically. The plugin stores a traveler profile and one record per trip. Your job is to read them before planning and write back everything durable you learn.
 
-## Capabilities
+## The rules
 
-### Scan Gmail for travel
-On demand: "plan my stockholm trip from my emails"
-Automated: weekly preview every Sunday, pre-trip reminder 24h before departure
+1. **Always call `get-travel-context` first.** Before recommending any flight, hotel, or itinerary. If the profile is empty, this is a first run: interview the user (see First run below).
+2. **Write back what you learn.** Any durable preference the user reveals mid-conversation goes to `update-profile` immediately. Any trip development (option researched, thing booked, checklist item done) goes to `update-trip`. Do not keep state only in chat.
+3. **Filter, don't dump.** The profile exists so you can pre-filter. If the user prefers Delta for miles, lead with Delta options and mention one cheaper alternative, not ten. If hotel budget is $150-300, don't show $500 rooms.
 
-The assistant searches Gmail for confirmation emails matching flight bookings, hotel reservations, rental cars, event tickets, and restaurant reservations. Results populate structured trip objects.
+## First run: build the profile
 
-### Trip types and templates
+Ask for these, conversationally, not as a form:
 
-**Concert/Festival** (Bad Bunny in Stockholm ready to go)
-Pre-trip: flight, hotel, concert tickets, dinner reservations, venue-to-transit mapped, outfit planned (weather check), earplugs packed, phone power bank
-Day of: tickets accessible offline, venue bag policy checked, transit to venue mapped, post-concert transit confirmed
-Post-trip: receipts saved, photos backed up
+- Home airport and passport country
+- Preferred airline or alliance, and which miles programs they collect
+- Hotel budget range per night, and booking platform preference (Booking.com, Airbnb, direct, corporate)
+- Card travel benefits worth checking against bookings (e.g. Amex Platinum hotel credit, Chase travel portal)
+- Anything else standing: seat preference, dietary needs, loyalty numbers
 
-**Standard vacation**
-Pre-trip (T-7d): bookings collected, travel docs checked, packing list, home tasks (mail hold, pet care), directions verified
-Pre-trip (T-1d): online check-in, packing complete, boarding passes saved, transit to airport confirmed
-Mid-trip: daily agenda from bookings, weather check, restaurant times synced, transit between activities mapped
-Post-trip: receipts saved, expenses logged, credits checked (hotel, lounge)
+Save with `update-profile`. Partial answers are fine; save what you get.
 
-**Business trip**
-Pre-trip: flights, hotel, meeting agenda synced, expense tracking opened, lounge access verified
-Mid-trip: next meeting reminder, receipt capture, expense log updated
-Post-trip: expense report drafted, receipts attached, follow-ups logged
+## Planning a trip
 
-**Weekend getaway**
-Same as standard but compressed — packing for 2-3 days, no mail hold needed for short trips
+1. `get-travel-context` for profile + existing trips. If this trip exists, resume it, don't restart.
+2. Create or update the trip record with `update-trip`: destination, dates, status `planning`.
+3. **Flights.** Search with the user's dates. Rank by their preferred carrier and miles program first, then price. Record the considered options in the trip record so a later session can compare without re-searching.
+4. **Hotels.** Filter by their budget range and platform preference. Cross-check card travel benefits from the profile: if a booking would qualify for a credit (e.g. prepaid Fine Hotels + Resorts for an Amex hotel credit), say so with the estimated savings. Save the shortlist.
+5. **Visa and regulations.** Check requirements for their passport country against the destination. Record status and any deadlines in the trip record.
+6. **Things to do.** Suggest based on trip dates and any anchor events. Save picks to the record.
+7. Build the checklist in the trip record: bookings pending, documents, visa steps, packing. Mark items done as they happen.
 
-### Stockholm trip (pre-seeded for Jul 10-13, 2026)
-If Anita installs this before Jul 10, the assistant already knows about the Stockholm trip with Bad Bunny concert on Jul 10. It pre-fills the concert template and will:
-- Scan Gmail for the flight booking and hotel confirmation
-- Build a packing list for Stockholm weather (18°C, chance of rain)
-- Map the venue from the hotel on concert night
-- Remind about earplugs and a power bank
-- Cross-reference Amex credits if the Amex Perk Reminder plugin is also installed
+## Reminders
 
-### Cross-plugin: Amex integration
-If Amex Perk Reminder is also installed, the assistant checks any hotel booking against the $300 FHR/THC credit. "You're booking 2 nights at Hotel J — this qualifies for your $300 Amex Platinum hotel credit."
+On first setup, offer to create two recurring jobs via the assistant's built-in scheduler:
 
-## Commands
+- Weekly Sunday morning: preview upcoming trips and open checklist items
+- Daily morning check: if a trip starts within 48 hours, surface the checklist and flight details
 
-Natural language, not rigid syntax:
+Plugins don't schedule natively; use the scheduler the assistant already has (same pattern as the Amex Perk Reminder plugin).
 
-- "plan my stockholm trip from my gmail"
-- "what's my flight time on friday"
-- "build a packing list for stockholm"
-- "add dinner at tradicja to my trip"
-- "show me what i still need to do before we leave"
-- "anything i haven't done for the trip yet"
-- "what trips do i have coming up"
+## Resuming
 
-No onboarding flow. Install and it works immediately — the assistant has the templates built in.
+"Where were we on the Lisbon trip" means: `get-travel-context` with the trip slug, summarize status in a few lines (booked, shortlisted, open items), then continue from the first open item.

@@ -1,0 +1,12 @@
+{
+  "name": "travel-planner",
+  "source": {
+    "source": "github",
+    "repo": "AnitaKirkovska/travel-planner",
+    "ref": "PIN_FULL_COMMIT_SHA_AFTER_PUSH"
+  },
+  "description": "A durable traveler profile plus trip records your assistant plans against. Remembers your preferred carrier, miles programs, hotel budget, and card travel benefits, so trip two takes one prompt instead of twenty.",
+  "category": "lifestyle",
+  "homepage": "https://github.com/AnitaKirkovska/travel-planner",
+  "license": "MIT"
+}
