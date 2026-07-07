@@ -1,6 +1,6 @@
 # Travel Planner
 
-Your assistant can already search flights and look up destinations. What it can't do out of the box is remember how you travel, or hand you the one-page briefing an EA would prepare before your boss got on a plane. This plugin does both.
+Your assistant can already search flights and look up destinations. What it can't do out of the box is remember how you travel, or hand you the one-page briefing an EA would prepare before you get on a plane. This plugin does both.
 
 ## What you get
 
