@@ -1,6 +1,6 @@
 {
   "name": "travel-planner",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A travel EA for your assistant: durable traveler profile, per-trip records, change monitoring via Gmail, calendar sync, and an EA-style trip brief emailed 48 hours before every departure.",
   "private": true,
   "license": "MIT",
