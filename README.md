@@ -1,4 +1,18 @@
-# Travel Planner
+<div align="center">
+
+<img src="hero.png" width="600" alt="Travel Planner">
+
+# travel-planner
+
+**your trips, briefed like you have an EA**
+
+![version](https://img.shields.io/badge/version-0.4.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![made for](https://img.shields.io/badge/made%20for-Vellum-8A2BE2)
+
+[What You Get](#what-you-get) • [What Runs Automatically](#what-runs-automatically) • [Install](#install) • [Example Brief](#example-brief)
+
+</div>
+
+---
 
 Your assistant can already search flights and look up destinations. What it can't do out of the box is remember how you travel, or hand you the one-page briefing an EA would prepare before you get on a plane. This plugin does both.
 
@@ -31,7 +45,7 @@ Both are hard requirements. Without them the plugin can't do its job.
 - **Gmail**: drafts your traveler profile from booking history, finds confirmations, watches for gate changes and delays, and sends you the trip brief.
 - **Google Calendar**: blocks trip dates and adds flight events once something is booked.
 
-## Setup
+## Install
 
 ```
 assistant plugins install travel-planner
