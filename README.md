@@ -1,5 +1,7 @@
 # Travel Planner
 
+![Travel Planner: Gmail and Calendar in, traveler profile, trip record, then trip brief, change alerts, and calendar sync out](cover.png)
+
 Your assistant can already search flights and look up destinations. What it can't do out of the box is remember how you travel, or hand you the one-page briefing an EA would prepare before your boss got on a plane. This plugin does both.
 
 ## What you get
