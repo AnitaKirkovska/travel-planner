@@ -61,22 +61,37 @@ const generateTripBrief: ToolDefinition = {
       // brief still works without a profile
     }
 
+    const renderFlight = (f: any): string => {
+      if (typeof f === "string") return esc(f);
+      const lines: string[] = [];
+      if (f.outbound) lines.push(`<strong>Out:</strong> ${esc(f.outbound)}`);
+      if (f.return) lines.push(`<strong>Back:</strong> ${esc(f.return)}`);
+      if (!f.outbound && !f.return)
+        lines.push(`<strong>${esc(f.route ?? f.summary ?? "Flight")}</strong> ${esc(f.date ?? "")} ${esc(f.time ?? "")}`.trim());
+      const meta: string[] = [];
+      if (f.airline) meta.push(esc(f.airline));
+      if (f.confirmation) meta.push(`Confirmation <code>${esc(f.confirmation)}</code>`);
+      if (f.seat) meta.push(`Seat ${esc(f.seat)}`);
+      if (Array.isArray(f.passengers) && f.passengers.length) meta.push(esc(f.passengers.join(", ")));
+      if (f.bags) meta.push(esc(f.bags));
+      if (meta.length) lines.push(meta.join(" · "));
+      return lines.join("<br/>");
+    };
     const flights = section(
       "Flights",
-      list(trip.flights?.booked ? [trip.flights.booked].flat() : [], (f) =>
-        `<strong>${esc(f.route ?? f.summary ?? "Flight")}</strong> ${esc(f.date ?? "")} ${esc(
-          f.time ?? "",
-        )}${f.confirmation ? ` · Confirmation <code>${esc(f.confirmation)}</code>` : ""}${
-          f.seat ? ` · Seat ${esc(f.seat)}` : ""
-        }`,
-      ),
+      list(trip.flights?.booked ? [trip.flights.booked].flat() : [], renderFlight),
     );
 
     const transfers = section(
       "Transfers",
-      list(trip.transfers, (t) =>
-        `${esc(t.summary ?? t)}${t.pickupTime ? ` · Pickup ${esc(t.pickupTime)}` : ""}`,
-      ),
+      list(trip.transfers, (t) => {
+        if (typeof t === "string") return esc(t);
+        const head = t.leg ?? t.summary ?? "";
+        const body = t.plan ?? (t.summary && t.leg ? t.summary : "");
+        return `${head ? `<strong>${esc(head)}</strong>` : ""}${head && body ? "<br/>" : ""}${esc(body)}${
+          t.pickupTime ? ` · Pickup ${esc(t.pickupTime)}` : ""
+        }`;
+      }),
     );
 
     const hotel = section(
@@ -86,17 +101,28 @@ const generateTripBrief: ToolDefinition = {
             trip.hotels.booked.address ?? "",
           )}<br/>Check-in ${esc(trip.hotels.booked.checkIn ?? "")} · Check-out ${esc(
             trip.hotels.booked.checkOut ?? "",
-          )}${
-            trip.hotels.booked.confirmation
-              ? ` · Confirmation <code>${esc(trip.hotels.booked.confirmation)}</code>`
-              : ""
-          }</p>`
+          )}${(() => {
+            const h = trip.hotels.booked;
+            const conf = h.confirmation ?? h.hotelConfirmation;
+            const bits: string[] = [];
+            if (conf) bits.push(`Confirmation <code>${esc(conf)}</code>`);
+            if (h.roomType) bits.push(esc(h.roomType));
+            if (h.phone) bits.push(esc(h.phone));
+            const extra = bits.length ? `<br/>${bits.join(" · ")}` : "";
+            const perks = h.perks ? `<br/><em>${esc(h.perks)}</em>` : "";
+            return `${extra}${perks}`;
+          })()}</p>`
         : "",
     );
 
+    const itineraryItems = trip.itinerary?.length ? trip.itinerary : trip.activities;
     const itinerary = section(
       "Day by day",
-      list(trip.itinerary, (d) => `<strong>${esc(d.day ?? d.date ?? "")}</strong> ${esc(d.plan ?? d)}`),
+      list(itineraryItems, (d) =>
+        typeof d === "string"
+          ? esc(d)
+          : `<strong>${esc(d.day ?? d.date ?? "")}</strong> ${esc(d.plan ?? "")}`,
+      ),
     );
 
     const docs = section(
@@ -107,7 +133,12 @@ const generateTripBrief: ToolDefinition = {
             ? { s: `Visa: ${trip.visa.required ? trip.visa.status ?? "required" : "not required"}` }
             : null,
           profile.passportCountry ? { s: `Passport: ${profile.passportCountry}` } : null,
-          ...(trip.documents ?? []).map((d: unknown) => ({ s: d })),
+          ...(Array.isArray(trip.documents)
+            ? trip.documents
+            : trip.documents && typeof trip.documents === "object"
+              ? Object.values(trip.documents)
+              : []
+          ).map((d: unknown) => ({ s: d })),
         ].filter(Boolean) as Array<{ s: unknown }>,
         (d) => esc(d.s),
       ),
@@ -117,9 +148,11 @@ const generateTripBrief: ToolDefinition = {
       "Local basics",
       list(
         [
-          trip.weather ? { s: `Weather: ${trip.weather}` } : null,
-          trip.currency ? { s: `Currency: ${trip.currency}` } : null,
-          trip.transit ? { s: `From the airport: ${trip.transit}` } : null,
+          (trip.localBasics?.weather ?? trip.weather) ? { s: `Weather: ${trip.localBasics?.weather ?? trip.weather}` } : null,
+          (trip.localBasics?.currency ?? trip.currency) ? { s: `Currency: ${trip.localBasics?.currency ?? trip.currency}` } : null,
+          (trip.localBasics?.transit ?? trip.transit) ? { s: `Getting around: ${trip.localBasics?.transit ?? trip.transit}` } : null,
+          trip.localBasics?.language ? { s: `Language: ${trip.localBasics.language}` } : null,
+          trip.localBasics?.plugs ? { s: `Plugs: ${trip.localBasics.plugs}` } : null,
           ...(trip.localNotes ?? []).map((n: unknown) => ({ s: n })),
         ].filter(Boolean) as Array<{ s: unknown }>,
         (b) => esc(b.s),
@@ -167,7 +200,7 @@ const generateTripBrief: ToolDefinition = {
     const missing = [
       !trip.flights?.booked && "flights",
       !trip.hotels?.booked && "hotel",
-      !trip.itinerary?.length && "itinerary",
+      !(trip.itinerary?.length || trip.activities?.length) && "itinerary",
       !trip.emergency?.length && "emergency numbers",
     ].filter(Boolean);
 
