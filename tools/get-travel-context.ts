@@ -37,9 +37,10 @@ const getTravelContext: ToolDefinition = {
     }
 
     if (input.trip) {
+      const safeSlug = String(input.trip).replace(/[^a-z0-9-]/gi, "-").toLowerCase();
       try {
         const record = JSON.parse(
-          await fs.readFile(path.join(tripsDir, `${input.trip}.json`), "utf8"),
+          await fs.readFile(path.join(tripsDir, `${safeSlug}.json`), "utf8"),
         );
         return { content: JSON.stringify({ profile, trip: record }, null, 2) };
       } catch {
