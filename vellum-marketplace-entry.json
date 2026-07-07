@@ -3,7 +3,7 @@
   "source": {
     "source": "github",
     "repo": "AnitaKirkovska/travel-planner",
-    "ref": "a514318e0ebd6a1f4e60c7d497c627683d0febd1"
+    "ref": "117fdec8dbd0c3aa414fa5bcae692c35ca49b470"
   },
   "description": "A travel EA for your assistant. Remembers how you travel (carrier, miles, hotel budget, card benefits), keeps per-trip records, watches Gmail for booking changes, syncs your calendar, and emails an EA-style trip brief 48 hours before departure.",
   "category": "lifestyle",
