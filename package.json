@@ -1,0 +1,34 @@
+{
+  "name": "travel-planner",
+  "version": "0.1.0",
+  "description": "Turn your travel emails into trip checklists. Scans Gmail for flight confirmations, hotel bookings, and activity reservations.",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20.12.0"
+  },
+  "peerDependencies": {
+    "@vellumai/plugin-api": ">=0.8.0 <1.0.0"
+  },
+  "vellum": {
+    "skills": ["travel-planner"],
+    "tools": ["check-travel"],
+    "schedules": [
+      {
+        "name": "weekly-preview",
+        "description": "Sunday preview of upcoming week's trips",
+        "cron": "0 9 * * 0",
+        "skill": "travel-planner",
+        "params": "check for upcoming trips this week"
+      },
+      {
+        "name": "pre-trip-reminder",
+        "description": "Reminder 24h before any trip departure",
+        "cron": "0 8 * * *",
+        "skill": "travel-planner",
+        "params": "check if any trips start tomorrow"
+      }
+    ]
+  }
+}
