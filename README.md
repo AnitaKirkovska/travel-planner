@@ -8,7 +8,6 @@ Your assistant can already search flights and look up destinations. What it can'
 - **Trip records** that persist across conversations: flights considered and booked, hotel shortlist, visa status, checklist. Planning resumes where it stopped, days later.
 - **A trip brief**, 48 hours before every departure: flights with confirmation numbers, transfers with pickup times, hotel with check-in details, day-by-day plan, documents, local basics, emergency numbers. Rendered in-app, PDF'd, and emailed to you (and companions if you want). Decisions made, not options listed.
 
-![Example trip brief](brief-example.png)
 - **Change monitoring**: 3 days and 1 day out, your Gmail gets swept for gate changes, delays, and cancellations. If something changed you get an email with what changed and what it affects. No news, no email.
 - **Calendar sync**: trip block plus flight events pushed to Google Calendar once booked.
 
@@ -28,7 +27,10 @@ What it will never do on its own: book anything, spend money, or email anyone ot
 
 ## Requirements
 
-Gmail and Google Calendar connections. The plugin drafts your profile from email history, watches for booking changes, sends your brief, and blocks your calendar. Without them it can't do its job.
+Both are hard requirements. Without them the plugin can't do its job.
+
+- **Gmail**: drafts your traveler profile from booking history, finds confirmations, watches for gate changes and delays, and sends you the trip brief.
+- **Google Calendar**: blocks trip dates and adds flight events once something is booked.
 
 ## Setup
 
@@ -62,6 +64,14 @@ Scheduled jobs (Sunday preview, pre-trip monitoring, 48h brief send) are created
 ## Cross-plugin: Amex Perk Reminder
 
 If [Amex Perk Reminder](https://github.com/AnitaKirkovska/amex-perk-reminder) is installed, hotel shortlists get checked against your active Amex credits automatically.
+
+## Example brief
+
+Built from a fictional Lisbon trip. This is what lands in your inbox 48 hours before departure:
+
+![Example trip brief](brief-example.png)
+
+Or open the real thing: [brief-example.pdf](brief-example.pdf)
 
 ## License
 
