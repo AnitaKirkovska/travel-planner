@@ -7,7 +7,7 @@ Your assistant can already search flights and look up destinations. What it can'
 - **A traveler profile**, drafted from your Gmail travel history and confirmed in one exchange: home airport, preferred carrier, miles programs, hotel budget, booking platform, card travel benefits, passport country.
 - **Trip records** that persist across conversations: flights considered and booked, hotel shortlist, visa status, checklist. Planning resumes where it stopped, days later.
 - **A trip brief**, 48 hours before every departure: flights with confirmation numbers, transfers with pickup times, hotel with check-in details, day-by-day plan, documents, local basics, emergency numbers. Rendered in-app, PDF'd, and emailed to you (and companions if you want). Decisions made, not options listed.
-- **Change monitoring**: 3 days and 1 day out, your Gmail gets swept for gate changes, delays, and cancellations. You only hear about it if something changed.
+- **Change monitoring**: 3 days and 1 day out, your Gmail gets swept for gate changes, delays, and cancellations. If something changed you get an email with what changed and what it affects. No news, no email.
 - **Calendar sync**: trip block plus flight events pushed to Google Calendar once booked.
 
 ## Requirements

@@ -66,7 +66,7 @@ The brief is what an EA hands the boss before a trip: one page, decisions made.
 
 ## Monitoring (3 days / 1 day out)
 
-At the scheduled checks, search Gmail for messages about this trip since the last check: airline changes, gate or time updates, hotel messages, cancellations. Update the trip record, then notify the user only if something changed. No news means no ping.
+At the scheduled checks, search Gmail for messages about this trip since the last check: airline changes, gate or time updates, hotel messages, cancellations. Update the trip record, then, only if something changed, **email the user a change alert** via Gmail: subject "Trip update: {destination}, {what changed}", body with the change, what it affects (connections, pickup times, check-in), and the updated detail. Also mention it in chat if a conversation is active, but the email is the required channel; chat alone is not delivery. If the change lands after a brief was already sent, regenerate and resend the brief. No news means no email.
 
 ## Resuming
 
