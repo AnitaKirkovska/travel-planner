@@ -8,7 +8,7 @@
 
 ![version](https://img.shields.io/badge/version-0.4.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![made for](https://img.shields.io/badge/made%20for-Vellum-8A2BE2)
 
-[What You Get](#what-you-get) • [What Runs Automatically](#what-runs-automatically) • [Install](#install) • [Example Brief](#example-brief)
+[What You Get](#what-you-get) • [Scheduled Jobs](#scheduled-jobs) • [Requirements](#requirements) • [Install](#install) • [Usage](#usage) • [Example Brief](#example-brief)
 
 </div>
 
@@ -25,7 +25,7 @@ Your assistant can already search flights and look up destinations. What it can'
 - **Change monitoring**: 3 days and 1 day out, your Gmail gets swept for gate changes, delays, and cancellations. If something changed you get an email with what changed and what it affects. No news, no email.
 - **Calendar sync**: trip block plus flight events pushed to Google Calendar once booked.
 
-## What runs automatically
+## Scheduled jobs
 
 The part you should read before installing. Once set up, the plugin acts on its own:
 
