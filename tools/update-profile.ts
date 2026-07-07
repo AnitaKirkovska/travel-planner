@@ -22,8 +22,12 @@ const updateProfile: ToolDefinition = {
   execute: async (input: UpdateProfileInput, ctx) => {
     const fs = await import("node:fs/promises");
     const path = await import("node:path");
+    const storageDir =
+      (ctx as { pluginStorageDir?: string }).pluginStorageDir ??
+      path.join(ctx.workingDir ?? process.cwd(), "plugins-data", "travel-planner");
+    await fs.mkdir(storageDir, { recursive: true });
 
-    const profilePath = path.join(ctx.pluginStorageDir, "profile.json");
+    const profilePath = path.join(storageDir, "profile.json");
     let profile: Record<string, unknown> = {};
     try {
       profile = JSON.parse(await fs.readFile(profilePath, "utf8"));
@@ -32,7 +36,6 @@ const updateProfile: ToolDefinition = {
     }
 
     const updated = { ...profile, ...input.fields, updatedAt: new Date().toISOString() };
-    await fs.mkdir(ctx.pluginStorageDir, { recursive: true });
     await fs.writeFile(profilePath, JSON.stringify(updated, null, 2), "utf8");
 
     return { content: { saved: Object.keys(input.fields), profile: updated } };

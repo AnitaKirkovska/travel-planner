@@ -34,12 +34,16 @@ const generateTripBrief: ToolDefinition = {
   execute: async (input: GenerateTripBriefInput, ctx) => {
     const fs = await import("node:fs/promises");
     const path = await import("node:path");
+    const storageDir =
+      (ctx as { pluginStorageDir?: string }).pluginStorageDir ??
+      path.join(ctx.workingDir ?? process.cwd(), "plugins-data", "travel-planner");
+    await fs.mkdir(storageDir, { recursive: true });
 
     const slug = input.trip.replace(/[^a-z0-9-]/gi, "-").toLowerCase();
     let trip: any;
     try {
       trip = JSON.parse(
-        await fs.readFile(path.join(ctx.pluginStorageDir, "trips", `${slug}.json`), "utf8"),
+        await fs.readFile(path.join(storageDir, "trips", `${slug}.json`), "utf8"),
       );
     } catch {
       return {
@@ -51,7 +55,7 @@ const generateTripBrief: ToolDefinition = {
     let profile: any = {};
     try {
       profile = JSON.parse(
-        await fs.readFile(path.join(ctx.pluginStorageDir, "profile.json"), "utf8"),
+        await fs.readFile(path.join(storageDir, "profile.json"), "utf8"),
       );
     } catch {
       // brief still works without a profile
@@ -155,7 +159,7 @@ const generateTripBrief: ToolDefinition = {
 </body>
 </html>`;
 
-    const briefsDir = path.join(ctx.pluginStorageDir, "briefs");
+    const briefsDir = path.join(storageDir, "briefs");
     await fs.mkdir(briefsDir, { recursive: true });
     const briefPath = path.join(briefsDir, `${slug}.html`);
     await fs.writeFile(briefPath, html, "utf8");

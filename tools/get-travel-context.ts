@@ -21,9 +21,13 @@ const getTravelContext: ToolDefinition = {
   execute: async (input: GetTravelContextInput, ctx) => {
     const fs = await import("node:fs/promises");
     const path = await import("node:path");
+    const storageDir =
+      (ctx as { pluginStorageDir?: string }).pluginStorageDir ??
+      path.join(ctx.workingDir ?? process.cwd(), "plugins-data", "travel-planner");
+    await fs.mkdir(storageDir, { recursive: true });
 
-    const profilePath = path.join(ctx.pluginStorageDir, "profile.json");
-    const tripsDir = path.join(ctx.pluginStorageDir, "trips");
+    const profilePath = path.join(storageDir, "profile.json");
+    const tripsDir = path.join(storageDir, "trips");
 
     let profile: Record<string, unknown> = {};
     try {

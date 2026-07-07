@@ -28,8 +28,12 @@ const updateTrip: ToolDefinition = {
   execute: async (input: UpdateTripInput, ctx) => {
     const fs = await import("node:fs/promises");
     const path = await import("node:path");
+    const storageDir =
+      (ctx as { pluginStorageDir?: string }).pluginStorageDir ??
+      path.join(ctx.workingDir ?? process.cwd(), "plugins-data", "travel-planner");
+    await fs.mkdir(storageDir, { recursive: true });
 
-    const tripsDir = path.join(ctx.pluginStorageDir, "trips");
+    const tripsDir = path.join(storageDir, "trips");
     await fs.mkdir(tripsDir, { recursive: true });
 
     const safeSlug = input.slug.replace(/[^a-z0-9-]/gi, "-").toLowerCase();
